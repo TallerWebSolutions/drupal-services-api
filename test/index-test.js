@@ -95,19 +95,19 @@ test('user - actions - login', function(t) {
   });
 });
 
-// test('user - actions - login - doesn\'t make request if already logged in', function(t) {
-//   t.plan(1);
+test('user - actions - login - doesn\'t make request if already logged in', function(t) {
+  t.plan(1);
 
-//   var drupal = loggedInDrupal('http://test.com/api');
+  var drupal = loggedInDrupal('http://test.com/api');
 
-//   var scope = nock('http://test.com/api')
-//     .post('/user/login')
-//     .reply(200, nockResponses.user.login);
+  var scope = nock('http://test.com/api')
+    .post('/user/login')
+    .reply(200, nockResponses.user.login);
 
-//   return drupal.login('user', 'password').then(function() {
-//     t.equal(scope.isDone(), false, 'request should not be made');
-//   });
-// });
+  return drupal.login('user', 'password').then(function() {
+    t.equal(scope.isDone(), false, 'request should not be made');
+  });
+});
 
 // test('user - actions - logout', function(t) {
 //   t.plan(2);
@@ -333,6 +333,15 @@ function loggedInDrupal(endpoint) {
 function mockLogin(drupal) {
   drupal._cookie = nockResponses.user.login.sessid;
   drupal._csrfToken = nockResponses.user.login.token;
+  drupal._user = nockResponses.system.connect.authenticated.user;
+
+  return drupal;
+}
+
+function mockAnonymous(drupal) {
+  drupal._cookie = nockResponses.user.login.sessid;
+  drupal._csrfToken = nockResponses.user.login.token;
+  drupal._user = nockResponses.system.connect.anonymous.user;
 
   return drupal;
 }
