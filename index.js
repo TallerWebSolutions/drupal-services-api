@@ -38,7 +38,7 @@ Drupal.prototype.middle = function () {
     }
     
     // Authenticate the request if there's session.
-    if (this.isLoggedIn()) {
+    if (this._cookie && this._csrfToken) {
       request.use(this.middleAuthenticateRequest());
     }
 
@@ -130,8 +130,7 @@ Drupal.prototype.login = function(username, password) {
       return returnPromise.resolve(isLoggedIn);
     }
     else {
-      this.agent
-        .post('user/login')
+      this.agent.post('user/login')
         .use(this.middle())
         .send({
           username: username,
@@ -145,7 +144,7 @@ Drupal.prototype.login = function(username, password) {
           returnPromise.resolve(data);
         }.bind(this));
     }
-  });
+  }.bind(this));
 
   return returnPromise.promise;
 };
