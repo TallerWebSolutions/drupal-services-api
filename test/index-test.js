@@ -57,7 +57,7 @@ test('Drupal.prototype.isLoggedIn', function(t) {
 
     drupal.isLoggedIn().then(function (isLoggedIn) {
       t.equal(isLoggedIn, true, 'should be true after a login in the api');
-  
+
       // Already logged in.
       mockLogin(drupal);
       drupal.isLoggedIn().then(function (isLoggedIn) {
@@ -109,79 +109,79 @@ test('user - actions - login - doesn\'t make request if already logged in', func
   });
 });
 
-// test('user - actions - logout', function(t) {
-//   t.plan(2);
+test('user - actions - logout', function(t) {
+  t.plan(2);
 
-//   var drupal = loggedInDrupal('http://test.com/api');
+  var drupal = loggedInDrupal('http://test.com/api');
 
-//   authedNock('http://test.com/api', drupal)
-//     .post('/user/logout')
-//     .reply(200, nockResponses.user.logout);
+  authedNock('http://test.com/api', drupal)
+    .post('/user/logout')
+    .reply(200, nockResponses.user.logout);
 
 
-//   return drupal.logout().then(function() {
-//     t.equal(drupal._cookie, null);
-//     t.equal(drupal._csrfToken, null);
-//   });
-// });
+  return drupal.logout().then(function() {
+    t.equal(drupal._cookie, null);
+    t.equal(drupal._csrfToken, null);
+  });
+});
 
-// test('user - crud - create', function(t) {
-//   t.plan(1);
-//   var drupal = loggedInDrupal('http://test.com/api');
+test('user - crud - create', function(t) {
+  t.plan(1);
+  var drupal = loggedInDrupal('http://test.com/api');
 
-//   authedNock('http://test.com/api', drupal)
-//     .post('/user/register')
-//     .reply(200, nockResponses.user.login);
+  authedNock('http://test.com/api', drupal)
+    .post('/user/register')
+    .reply(200, nockResponses.user.login);
 
-//   return drupal.user.create({
-//     mail: 'tester@test.com',
-//     pass: 'test123'
-//   })
-//   .then(function(response) {
-//     t.deepEqual(response, nockResponses.user.login);
-//   });
-// });
+  return drupal.user.create({
+    mail: 'tester@test.com',
+    pass: 'test123'
+  })
+  .then(function(response) {
+    t.deepEqual(response.body, nockResponses.user.login);
+  });
+});
 
-// test('node - crud - index', function(t) {
-//   t.plan(1);
+test('node - crud - index', function(t) {
+  t.plan(1);
 
-//   var drupal = new Drupal('http://test.com/api');
+  var drupal = new Drupal('http://test.com/api');
 
-//   nock('http://test.com')
-//     .get('/api/node.json')
-//     .reply(200, nockResponses.node.index);
+  nock('http://test.com')
+    .get('/api/node')
+    .reply(200, nockResponses.node.index);
 
-//   return drupal.index().then(function(response) {
-//     t.deepEqual(response, nockResponses.node.index);
-//   });
-// });
+  return drupal.node.index().then(function(response) {
+    t.deepEqual(response.body, nockResponses.node.index);
+  });
+});
 
-// test('node - crud - index w/ query', function(t) {
-//   t.plan(1);
+test('node - crud - index w/ query', function(t) {
+  t.plan(1);
 
-//   var drupal = new Drupal('http://test.com/api');
+  var drupal = new Drupal('http://test.com/api');
 
-//   nock('http://test.com')
-//     .get('/api/node.json?limit=1&parameters%5Btitle%5D=something')
-//     .reply(200, nockResponses.node.indexQuery);
+  nock('http://test.com')
+    .get('/api/node?limit=1&parameters%5Btitle%5D=something')
+    .reply(200, nockResponses.node.indexQuery);
 
-//   return drupal.index({limit: 1}, {title: 'something'}).then(function(response) {
-//     t.deepEqual(response, nockResponses.node.indexQuery);
-//   });
-// });
+  return drupal.node.index({limit: 1}, {title: 'something'}).then(function(response) {
+    t.deepEqual(response.body, nockResponses.node.indexQuery);
+  });
+});
 
-// test('node - crud - retrieve', function(t) {
-//   t.plan(1);
-//   var drupal = new Drupal('http://test.com/api');
+test('node - crud - retrieve', function(t) {
+  t.plan(1);
+  var drupal = new Drupal('http://test.com/api');
 
-//   nock('http://test.com')
-//     .get('/api/node/3.json')
-//     .reply(200, nockResponses.node.retrieve);
+  nock('http://test.com')
+    .get('/api/node/3')
+    .reply(200, nockResponses.node.retrieve);
 
-//   return drupal.retrieve(3).then(function(response) {
-//     t.deepEqual(response, nockResponses.node.retrieve);
-//   });
-// });
+  return drupal.node.retrieve(3).then(function(response) {
+    t.deepEqual(response.body, nockResponses.node.retrieve);
+  });
+});
 
 // test('node - crud - create', function(t) {
 //   t.plan(1);

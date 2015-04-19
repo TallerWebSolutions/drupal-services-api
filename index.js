@@ -20,6 +20,7 @@ function Drupal(endpoint, forceToken) {
   // this.taxonomyVocabulary = new TaxonomyVocabulary(this);
   // this.file               = new DrupalFile(this);
   this.user               = new User(this);
+  this.node               = new Node(this);
 }
 
 /*
@@ -36,7 +37,7 @@ Drupal.prototype.middle = function () {
     if (this._forceToken && !this._csrfToken) {
       request.use(this.middleCsrfToken());
     }
-    
+
     // Authenticate the request if there's session.
     if (this._cookie && this._csrfToken) {
       request.use(this.middleAuthenticateRequest());
@@ -98,7 +99,7 @@ Drupal.prototype.connect = function () {
   var connectPromise = this.agent
     .post('system/connect')
     .use(this.middleUrlForPath());
-    
+
   this.user.token().then(function (res, error) {
     this._csrfToken = res.body.token;
 
@@ -111,7 +112,7 @@ Drupal.prototype.connect = function () {
         var data        = resCon.body;
         this._user      = data.user;
         this._cookie    = createCookieFromUser(data);
-        
+
         returnPromise.resolve(data);
       }.bind(this));
   }.bind(this));
@@ -159,42 +160,6 @@ Drupal.prototype.logout = function() {
       return true;
     }.bind(this));
 };
-
-/*
- * Node methods
- */
-Drupal.prototype.index = function(options, params) {
-  // This merges options like limit: 1 and params like title: 'whatever'.
-  var query = assign({}, options || {}, {
-    parameters: params || {}
-  });
-
-  return this.agent
-    .get('node')
-    .use(this.middle())
-    .query(query);
-};
-
-Drupal.prototype.node = function(nid) {
-  return this.agent
-    .get('node/' + nid)
-    .use(this.middle());
-};
-
-// Drupal.prototype.node.create = function(body) {
-//   return this.agent
-//     .post('node.json')
-//     .use(this.middle())
-//     .send(body);
-// };
-
-// Drupal.prototype.update = function(nid, body) {
-//   return this.authenticatedPut(this.urlForNode(nid), body);
-// };
-
-// Drupal.prototype.delete = function(nid) {
-//   return this.authenticatedDelete(this.urlForNode(nid));
-// };
 
 Drupal.prototype.middleAuthenticateRequest = function() {
   return function (request) {
