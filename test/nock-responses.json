@@ -1,4 +1,51 @@
 {
+  "system": {
+    "connect": {
+      "anonymous": {
+        "sessid": "2JbPDpYZ1yK3i9OEQgFM0WNh2PAdCzzYGSbsfJ3PKMM",
+        "session_name": "SESS1b0a1380864f10977176dcefb0ee9573",
+        "user": {
+          "uid": 0,
+          "hostname": "test.com",
+          "roles": {
+            "1": "anonymous user"
+          },
+          "cache": 0,
+          "timestamp": 1429345886
+        }
+      },
+      "authenticated": {
+        "sessid": "iUkWu9lZ1Phf44Nr1Z4Ae1ihENjWqiXWBHAJLmBr1mQ",
+        "session_name": "SESS1b0a1380864f10977176dcefb0ee9573",
+        "user": {
+          "uid": "1",
+          "name": "admin",
+          "mail": "admin@example.com",
+          "theme": "",
+          "signature": "",
+          "signature_format": null,
+          "created": "1428647190",
+          "access": "1429347274",
+          "login": "1429347274",
+          "status": "1",
+          "timezone": "UTC",
+          "language": "",
+          "picture": "0",
+          "init": "admin@example.com",
+          "data": false,
+          "sid": "iUkWu9lZ1Phf44Nr1Z4Ae1ihENjWqiXWBHAJLmBr1mQ",
+          "ssid": "",
+          "hostname": "test.com",
+          "timestamp": "1429347274",
+          "cache": "0",
+          "session": "",
+          "roles": {
+            "2": "authenticated user"
+          }
+        }
+      }
+    }
+  },
   "user": {
     "register": {
       "uid": "8",
