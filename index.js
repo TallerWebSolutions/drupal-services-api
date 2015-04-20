@@ -27,6 +27,7 @@ function Drupal(endpoint, forceToken) {
  */
 Drupal.prototype.middle = function () {
   return function (request) {
+
     // Prefix with endpoint path.
     if (this._endpoint) {
       request.use(this.middleUrlForPath());
@@ -41,6 +42,9 @@ Drupal.prototype.middle = function () {
     if (this._cookie && this._csrfToken) {
       request.use(this.middleAuthenticateRequest());
     }
+
+    // Adds conten-type and accept to request.
+    request.use(this.middleSetType());
 
     return request;
   }.bind(this);
@@ -105,8 +109,8 @@ Drupal.prototype.connect = function () {
   var returnPromise = Promise.defer();
   var connectPromise = this.agent
     .post('system/connect')
-    .use(this.middleSetType())
-    .use(this.middleUrlForPath());
+    .use(this.middleUrlForPath())
+    .use(this.middleSetType());
 
   this.user.token().then(function (res) {
     this._csrfToken = res.body.token;
@@ -143,7 +147,6 @@ Drupal.prototype.login = function(username, password) {
     else {
       this.agent.post('user/login')
         .use(this.middle())
-        .use(this.middleSetType())
         .send({
           username: username,
           password: password
@@ -167,7 +170,6 @@ Drupal.prototype.login = function(username, password) {
 Drupal.prototype.logout = function() {
   return this.agent
     .post('user/logout')
-    .use(this.middleSetType())
     .use(this.middle())
     .then(function () {
       this._cookie    = null;

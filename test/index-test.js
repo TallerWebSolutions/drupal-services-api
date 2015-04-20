@@ -36,7 +36,7 @@ test('Drupal.prototype.isLoggedIn', function(t) {
 
   // Local Check.
   nock('http://test.com/api')
-    .get('/user/token')
+    .post('/user/token')
     .reply(200, {
       token: nockResponses.user.login.token
     });
@@ -50,7 +50,7 @@ test('Drupal.prototype.isLoggedIn', function(t) {
       .reply(200, nockResponses.system.connect.authenticated);
 
     nock('http://test.com/api')
-      .get('/user/token')
+      .post('/user/token')
       .reply(200, {
         token: nockResponses.user.login.token
       });
@@ -80,7 +80,7 @@ test('user - actions - login', function(t) {
 
   // Local Check.
   nock('http://test.com/api')
-    .get('/user/token')
+    .post('/user/token')
     .reply(200, {
       token: nockResponses.user.login.token
     });
