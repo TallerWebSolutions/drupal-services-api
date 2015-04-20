@@ -89,7 +89,7 @@ test('user - actions - login', function(t) {
     .post('/user/login')
     .reply(200, nockResponses.user.login);
 
-  return drupal.login('user', 'password').then(function(data) {
+  return drupal.login('user', 'password').then(function() {
     t.equal(drupal._cookie, cookie());
     t.equal(drupal._csrfToken, nockResponses.user.login.token);
   });
@@ -334,14 +334,6 @@ function mockLogin(drupal) {
   drupal._cookie = nockResponses.user.login.sessid;
   drupal._csrfToken = nockResponses.user.login.token;
   drupal._user = nockResponses.system.connect.authenticated.user;
-
-  return drupal;
-}
-
-function mockAnonymous(drupal) {
-  drupal._cookie = nockResponses.user.login.sessid;
-  drupal._csrfToken = nockResponses.user.login.token;
-  drupal._user = nockResponses.system.connect.anonymous.user;
 
   return drupal;
 }

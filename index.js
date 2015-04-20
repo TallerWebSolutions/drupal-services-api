@@ -2,7 +2,6 @@
 
 var superagent = require('superagent-bluebird-promise');
 // var interceptor = require('superagent-intercept');
-var assign  = require('lodash-node/modern/objects/assign');
 var TaxonomyVocabulary = require('./lib/taxonomy-vocabulary');
 var DrupalFile = require('./lib/file');
 var User    = require('./lib/user');
@@ -84,14 +83,12 @@ Drupal.prototype.isLoggedIn = function () {
 };
 
 Drupal.prototype.isLoggedUser = function (user) {
-  var user = user || this._user;
+  user = user || this._user;
   var hasCookieToken = this._cookie && this._csrfToken;
-  var hasLoggedUser  = user != null
-    && typeof user.uid != 'null'
-    && user.uid != 0;
+  var hasLoggedUser  = user != null && user.uid != null && user.uid !== 0;
 
-  return hasCookieToken && hasLoggedUser;
-}
+  return (hasCookieToken && hasLoggedUser);
+};
 
 Drupal.prototype.connect = function () {
   var returnPromise = Promise.defer();
@@ -100,14 +97,14 @@ Drupal.prototype.connect = function () {
     .post('system/connect')
     .use(this.middleUrlForPath());
 
-  this.user.token().then(function (res, error) {
+  this.user.token().then(function (res) {
     this._csrfToken = res.body.token;
 
     // Connect to Drupal.
     connectPromise
       .use(this.middleCsrfToken())
       .send()
-      .then(function (resCon, error) {
+      .then(function (resCon) {
         // @TODO: Set user data.
         var data        = resCon.body;
         this._user      = data.user;
@@ -137,7 +134,7 @@ Drupal.prototype.login = function(username, password) {
           username: username,
           password: password
         })
-        .then(function(response, error) {
+        .then(function(response) {
           var data        = response.body;
           this._cookie    = createCookieFromUser(data);
           this._csrfToken = data.token;
