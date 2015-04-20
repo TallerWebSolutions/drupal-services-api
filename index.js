@@ -64,6 +64,14 @@ Drupal.prototype.middleUrlForPath = function () {
   }.bind(this);
 };
 
+Drupal.prototype.middleSetType = function () {
+  return function (request) {
+      request.accept('json')
+      request.type('json')
+      return request;
+  }.bind(this);
+};
+
 Drupal.prototype.isLoggedIn = function () {
 
   // Check local login.
@@ -97,8 +105,7 @@ Drupal.prototype.connect = function () {
   var returnPromise = Promise.defer();
   var connectPromise = this.agent
     .post('system/connect')
-    .accept('json')
-    .type('json')
+    .use(this.middleSetType())
     .use(this.middleUrlForPath());
 
   this.user.token().then(function (res) {
@@ -136,8 +143,7 @@ Drupal.prototype.login = function(username, password) {
     else {
       this.agent.post('user/login')
         .use(this.middle())
-        .accept('json')
-        .type('json')
+        .use(this.middleSetType())
         .send({
           username: username,
           password: password
@@ -161,8 +167,7 @@ Drupal.prototype.login = function(username, password) {
 Drupal.prototype.logout = function() {
   return this.agent
     .post('user/logout')
-    .accept('json')
-    .type('json')
+    .use(this.middleSetType())
     .use(this.middle())
     .then(function () {
       this._cookie    = null;
