@@ -78,6 +78,9 @@ Drupal.prototype.isLoggedIn = function () {
         return true;
       }
       return false;
+    }.bind(this))
+    .catch(function (error) {
+      return Promise.reject(error);
     }.bind(this));
   }
 };
@@ -92,14 +95,14 @@ Drupal.prototype.isLoggedUser = function (user) {
 
 Drupal.prototype.connect = function () {
   var returnPromise = Promise.defer();
-
   var connectPromise = this.agent
     .post('system/connect')
+    .accept('json')
+    .type('json')
     .use(this.middleUrlForPath());
 
   this.user.token().then(function (res) {
     this._csrfToken = res.body.token;
-
     // Connect to Drupal.
     connectPromise
       .use(this.middleCsrfToken())
@@ -112,6 +115,9 @@ Drupal.prototype.connect = function () {
 
         returnPromise.resolve(data);
       }.bind(this));
+  }.bind(this))
+  .catch(function (error) {
+    return returnPromise.reject(error);
   }.bind(this));
 
   return returnPromise.promise;
@@ -130,6 +136,8 @@ Drupal.prototype.login = function(username, password) {
     else {
       this.agent.post('user/login')
         .use(this.middle())
+        .accept('json')
+        .type('json')
         .send({
           username: username,
           password: password
@@ -142,6 +150,9 @@ Drupal.prototype.login = function(username, password) {
           returnPromise.resolve(data);
         }.bind(this));
     }
+  }.bind(this))
+  .catch(function (error) {
+    returnPromise.reject(error);
   }.bind(this));
 
   return returnPromise.promise;
@@ -150,6 +161,8 @@ Drupal.prototype.login = function(username, password) {
 Drupal.prototype.logout = function() {
   return this.agent
     .post('user/logout')
+    .accept('json')
+    .type('json')
     .use(this.middle())
     .then(function () {
       this._cookie    = null;
