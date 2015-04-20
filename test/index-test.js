@@ -183,38 +183,38 @@ test('node - crud - retrieve', function(t) {
   });
 });
 
-// test('node - crud - create', function(t) {
-//   t.plan(1);
-//   var drupal = loggedInDrupal('http://test.com/api');
+test('node - crud - create', function(t) {
+  t.plan(1);
+  var drupal = loggedInDrupal('http://test.com/api');
 
-//   authedNock('http://test.com', drupal)
-//     .post('/api/node.json')
-//     .reply(200, nockResponses.node.create);
+  authedNock('http://test.com', drupal)
+    .post('/api/node')
+    .reply(200, nockResponses.node.create);
 
-//   return drupal.create({
-//     type: 'article',
-//     title: 'title',
-//     field_phone_number: { und: [{ value: '1234567890' }] }
-//   }).then(function(response) {
-//     t.deepEqual(response, nockResponses.node.create);
-//   });
-// });
+  return drupal.node.create({
+    type: 'article',
+    title: 'title',
+    field_phone_number: { und: [{ value: '1234567890' }] }
+  }).then(function(response) {
+    t.deepEqual(response.body, nockResponses.node.create);
+  });
+});
 
-// test('node - crud - update', function(t) {
-//   t.plan(1);
-//   var drupal = loggedInDrupal('http://test.com/api');
+test('node - crud - update', function(t) {
+  t.plan(1);
+  var drupal = loggedInDrupal('http://test.com/api');
 
-//   authedNock('http://test.com', drupal)
-//     .put('/api/node/5.json')
-//     .reply(200, nockResponses.node.update);
+  authedNock('http://test.com', drupal)
+    .put('/api/node/5')
+    .reply(200, nockResponses.node.update);
 
-//   return drupal.update(5, {
-//     title: 'new title',
-//     field_phone_number: { und: [{ value: '999999999' }] }
-//   }).then(function(response) {
-//     t.deepEqual(response, nockResponses.node.update);
-//   });
-// });
+  return drupal.node.update(5, {
+    title: 'new title',
+    field_phone_number: { und: [{ value: '999999999' }] }
+  }).then(function(response) {
+    t.deepEqual(response.body, nockResponses.node.update);
+  });
+});
 
 // test('node - crud - delete', function(t) {
 //   t.plan(1);
