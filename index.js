@@ -70,8 +70,8 @@ Drupal.prototype.middleUrlForPath = function () {
 
 Drupal.prototype.middleSetType = function () {
   return function (request) {
-      request.accept('json')
-      request.type('json')
+      request.accept('json');
+      request.type('json');
       return request;
   }.bind(this);
 };
