@@ -80,7 +80,7 @@ Drupal.prototype.isLoggedIn = function () {
       return false;
     }.bind(this))
     .catch(function (error) {
-      returnPromise.reject(error);
+      return Promise.reject(error);
     }.bind(this));
   }
 };
@@ -116,7 +116,7 @@ Drupal.prototype.connect = function () {
       }.bind(this));
   }.bind(this))
   .catch(function (error) {
-    returnPromise.reject(error);
+    return returnPromise.reject(error);
   }.bind(this));
 
   return returnPromise.promise;
