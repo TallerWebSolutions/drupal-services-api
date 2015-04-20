@@ -216,103 +216,103 @@ test('node - crud - update', function(t) {
   });
 });
 
-// test('node - crud - delete', function(t) {
-//   t.plan(1);
-//   var drupal = loggedInDrupal('http://test.com/api');
+test('node - crud - delete', function(t) {
+  t.plan(1);
+  var drupal = loggedInDrupal('http://test.com/api');
 
-//   authedNock('http://test.com', drupal)
-//     .delete('/api/node/5.json')
-//     .reply(200, nockResponses.node.delete);
+  authedNock('http://test.com', drupal)
+    .delete('/api/node/5')
+    .reply(200, nockResponses.node.delete);
 
-//   return drupal.delete(5).then(function(response) {
-//     t.deepEqual(response, nockResponses.node.delete);
-//   });
-// });
+  return drupal.node.delete(5).then(function(response) {
+    t.deepEqual(response.body, nockResponses.node.delete);
+  });
+});
 
-// test('Initializes taxonomyVocabulary with client', function(t) {
-//   t.plan(1);
-//   var drupal = new Drupal('http://test.com/api');
+test('Initializes taxonomyVocabulary with client', function(t) {
+  t.plan(1);
+  var drupal = new Drupal('http://test.com/api');
 
-//   t.deepEqual(drupal.taxonomyVocabulary.drupal, drupal);
-// });
+  t.deepEqual(drupal.taxonomyVocabulary.drupal, drupal);
+});
 
-// test('taxonomyVocabulary - crud - index', function(t) {
-//   t.plan(1);
-//   var drupal = new Drupal('http://test.com/api');
+test('taxonomyVocabulary - crud - index', function(t) {
+  t.plan(1);
+  var drupal = new Drupal('http://test.com/api');
 
-//   nock('http://test.com')
-//     .get('/api/taxonomy_vocabulary.json')
-//     .reply(200, nockResponses.taxonomyVocabulary.index);
+  nock('http://test.com')
+    .get('/api/taxonomy_vocabulary')
+    .reply(200, nockResponses.taxonomyVocabulary.index);
 
-//   return drupal.taxonomyVocabulary.index().then(function(response) {
-//     t.deepEqual(response, nockResponses.taxonomyVocabulary.index);
-//   });
-// });
+  return drupal.taxonomyVocabulary.index().then(function(response) {
+    t.deepEqual(response.body, nockResponses.taxonomyVocabulary.index);
+  });
+});
 
-// test('taxonomyVocabulary - crud - getTree', function(t) {
-//   t.plan(1);
-//   var drupal = new Drupal('http://test.com/api');
+test('taxonomyVocabulary - crud - getTree', function(t) {
+  t.plan(1);
+  var drupal = new Drupal('http://test.com/api');
 
-//   nock('http://test.com')
-//     .post('/api/taxonomy_vocabulary/getTree.json')
-//     .reply(200, nockResponses.taxonomyVocabulary.getTree);
+  nock('http://test.com')
+    .post('/api/taxonomy_vocabulary/getTree')
+    .reply(200, nockResponses.taxonomyVocabulary.getTree);
 
-//   return drupal.taxonomyVocabulary.getTree(3).then(function(response) {
-//     t.deepEqual(response, nockResponses.taxonomyVocabulary.getTree);
-//   });
-// });
+  return drupal.taxonomyVocabulary.getTree(3).then(function(response) {
+    t.deepEqual(response.body, nockResponses.taxonomyVocabulary.getTree);
+  });
+});
 
-// test('file - crud - index', function(t) {
-//   t.plan(1);
-//   var drupal = loggedInDrupal('http://test.com/api');
+test('file - crud - index', function(t) {
+  t.plan(1);
+  var drupal = loggedInDrupal('http://test.com/api');
 
-//   authedNock('http://test.com', drupal)
-//     .get('/api/file.json')
-//     .reply(200, nockResponses.file.index);
+  authedNock('http://test.com', drupal)
+    .get('/api/file')
+    .reply(200, nockResponses.file.index);
 
-//   return drupal.file.index().then(function(response) {
-//     t.deepEqual(response, nockResponses.file.index);
-//   }, t.error);
-// });
+  return drupal.file.index().then(function(response) {
+    t.deepEqual(response.body, nockResponses.file.index);
+  }, t.error);
+});
 
-// test('file - crud - retrieve', function(t) {
-//   t.plan(1);
-//   var drupal = loggedInDrupal('http://test.com/api');
+test('file - crud - retrieve', function(t) {
+  t.plan(1);
+  var drupal = loggedInDrupal('http://test.com/api');
 
-//   authedNock('http://test.com', drupal)
-//     .get('/api/file/3.json')
-//     .reply(200, nockResponses.file.retrieve);
+  authedNock('http://test.com', drupal)
+    .get('/api/file/3')
+    .reply(200, nockResponses.file.retrieve);
 
-//   return drupal.file.retrieve(3).then(function(response) {
-//     t.deepEqual(response, nockResponses.file.retrieve);
-//   });
-// });
+  return drupal.file.retrieve(3).then(function(response) {
+    t.deepEqual(response.body, nockResponses.file.retrieve);
+  });
+});
 
-// test('user - index', function(t) {
-//   t.plan(1);
-//   var drupal = loggedInDrupal('http://test.com/api');
+test('user - index', function(t) {
+  t.plan(1);
+  var drupal = loggedInDrupal('http://test.com/api');
 
-//   authedNock('http://test.com', drupal)
-//     .get('/api/user.json')
-//     .reply(200, nockResponses.user.index);
+  authedNock('http://test.com', drupal)
+    .get('/api/user')
+    .reply(200, nockResponses.user.index);
 
-//   return drupal.user.index().then(function(response) {
-//     t.deepEqual(response, nockResponses.user.index);
-//   }, t.error);
-// });
+  return drupal.user.index().then(function(response) {
+    t.deepEqual(response.body, nockResponses.user.index);
+  }, t.error);
+});
 
-// test('user - retrieve', function(t) {
-//   t.plan(1);
-//   var drupal = loggedInDrupal('http://test.com/api');
+test('user - retrieve', function(t) {
+  t.plan(1);
+  var drupal = loggedInDrupal('http://test.com/api');
 
-//   authedNock('http://test.com', drupal)
-//     .get('/api/user/1.json')
-//     .reply(200, nockResponses.user.retrieve);
+  authedNock('http://test.com', drupal)
+    .get('/api/user/1')
+    .reply(200, nockResponses.user.retrieve);
 
-//   return drupal.user.retrieve(1).then(function(response) {
-//     t.deepEqual(response, nockResponses.user.retrieve);
-//   }, t.error);
-// });
+  return drupal.user.retrieve(1).then(function(response) {
+    t.deepEqual(response.body, nockResponses.user.retrieve);
+  }, t.error);
+});
 
 function authedNock(url, drupalClient) {
   return nock(url, {

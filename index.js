@@ -3,8 +3,8 @@
 var superagent = require('superagent-bluebird-promise');
 // var interceptor = require('superagent-intercept');
 var assign  = require('lodash-node/modern/objects/assign');
-// var TaxonomyVocabulary = require('./lib/taxonomy-vocabulary');
-// var DrupalFile = require('./lib/file');
+var TaxonomyVocabulary = require('./lib/taxonomy-vocabulary');
+var DrupalFile = require('./lib/file');
 var User    = require('./lib/user');
 var Node    = require('./lib/node');
 var Promise = require('bluebird'); // jshint ignore:line
@@ -17,8 +17,8 @@ function Drupal(endpoint, forceToken) {
   this._csrfToken         = null;
   this._user              = null;
   this._forceToken        = forceToken;
-  // this.taxonomyVocabulary = new TaxonomyVocabulary(this);
-  // this.file               = new DrupalFile(this);
+  this.taxonomyVocabulary = new TaxonomyVocabulary(this);
+  this.file               = new DrupalFile(this);
   this.user               = new User(this);
   this.node               = new Node(this);
 }
