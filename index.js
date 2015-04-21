@@ -46,6 +46,9 @@ Drupal.prototype.middle = function () {
     // Adds conten-type and accept to request.
     request.use(this.middleSetType());
 
+    // Adds credentials to the request.
+    request.withCredentials();
+
     return request;
   }.bind(this);
 };
