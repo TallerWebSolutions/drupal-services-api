@@ -10,7 +10,7 @@ var Promise = require('bluebird'); // jshint ignore:line
 
 function Drupal(endpoint, forceToken) {
 
-  this.agent              = superagent.agent();
+  this.agent              = superagent;
   this._endpoint          = endpoint;
   this._cookie            = null;
   this._csrfToken         = null;
