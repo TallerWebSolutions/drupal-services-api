@@ -8,14 +8,20 @@ var User    = require('./lib/user');
 var Node    = require('./lib/node');
 var Promise = require('bluebird'); // jshint ignore:line
 
-function Drupal(endpoint, forceToken) {
+function Drupal(endpoint, connection) {
 
-  this.agent              = superagent;
+  // Agent is only needed in node.
+  if (typeof superagent.agent == 'function') {
+    this.agent = superagent.agent();
+  }
+  else {
+    this.agent = superagent;
+  }
+
   this._endpoint          = endpoint;
   this._cookie            = null;
   this._csrfToken         = null;
   this._user              = null;
-  this._forceToken        = forceToken;
   this.taxonomyVocabulary = new TaxonomyVocabulary(this);
   this.file               = new DrupalFile(this);
   this.user               = new User(this);
@@ -29,9 +35,7 @@ Drupal.prototype.middle = function () {
   return function (request) {
 
     // Prefix with endpoint path.
-    if (this._endpoint) {
-      request.use(this.middleUrlForPath());
-    }
+    request.use(this.middleUrlForPath());
 
     // Use a token for the request.
     request.use(this.middleCsrfToken());
@@ -105,6 +109,7 @@ Drupal.prototype.connect = function () {
   var returnPromise = Promise.defer();
   var connectPromise = this.agent
     .post('system/connect')
+    .use(this.middleAuthenticateRequest())
     .use(this.middleUrlForPath())
     .use(this.middleSetType());
 
@@ -183,7 +188,7 @@ Drupal.prototype.middleAuthenticateRequest = function() {
       request.withCredentials();
     }
     else {
-      this._cookie && request.set('Cookie', this._cookie);
+      this._cookie && (request.cookies = this._cookie);
       this._csrfToken && request.set('X-CSRF-Token', this._csrfToken);
     }
     return request;
