@@ -10,7 +10,7 @@ var Promise = require('bluebird'); // jshint ignore:line
 
 function Drupal(endpoint, forceToken) {
 
-  this.agent              = superagent;
+  this.agent              = superagent.agent();
   this._endpoint          = endpoint;
   this._cookie            = null;
   this._csrfToken         = null;
@@ -33,7 +33,7 @@ Drupal.prototype.middle = function () {
       request.use(this.middleUrlForPath());
     }
 
-    // Use or get a token for the request.
+    // Use a token for the request.
     if (this._forceToken && !this._csrfToken) {
       request.use(this.middleCsrfToken());
     }
@@ -47,7 +47,9 @@ Drupal.prototype.middle = function () {
     request.use(this.middleSetType());
 
     // Adds credentials to the request.
-    request.withCredentials();
+    if (typeof request.withCredentials == 'function') {
+      request.withCredentials();
+    }
 
     return request;
   }.bind(this);
@@ -117,6 +119,8 @@ Drupal.prototype.connect = function () {
 
   this.user.token().then(function (res) {
     this._csrfToken = res.body.token;
+
+
     // Connect to Drupal.
     connectPromise
       .use(this.middleCsrfToken())
