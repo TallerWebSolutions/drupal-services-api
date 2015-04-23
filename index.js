@@ -34,22 +34,13 @@ Drupal.prototype.middle = function () {
     }
 
     // Use a token for the request.
-    if (this._forceToken && !this._csrfToken) {
-      request.use(this.middleCsrfToken());
-    }
+    request.use(this.middleCsrfToken());
 
     // Authenticate the request if there's session.
-    if (this._cookie && this._csrfToken) {
-      request.use(this.middleAuthenticateRequest());
-    }
+    request.use(this.middleAuthenticateRequest());
 
     // Adds conten-type and accept to request.
     request.use(this.middleSetType());
-
-    // Adds credentials to the request.
-    if (typeof request.withCredentials == 'function') {
-      request.withCredentials();
-    }
 
     return request;
   }.bind(this);
@@ -187,8 +178,14 @@ Drupal.prototype.logout = function() {
 
 Drupal.prototype.middleAuthenticateRequest = function() {
   return function (request) {
-    request.set('Cookie', this._cookie);
-    request.set('X-CSRF-Token', this._csrfToken);
+    // Adds credentials to the request.
+    if (typeof request.withCredentials == 'function') {
+      request.withCredentials();
+    }
+    else {
+      this._cookie && request.set('Cookie', this._cookie);
+      this._csrfToken && request.set('X-CSRF-Token', this._csrfToken);
+    }
     return request;
   }.bind(this);
 };
