@@ -6,6 +6,7 @@ var TaxonomyVocabulary = require('./lib/taxonomy-vocabulary');
 var DrupalFile = require('./lib/file');
 var User    = require('./lib/user');
 var Node    = require('./lib/node');
+var Entity    = require('./lib/entity');
 var Promise = require('bluebird'); // jshint ignore:line
 
 function Drupal(endpoint, connection) {
@@ -28,6 +29,9 @@ function Drupal(endpoint, connection) {
   this.node               = new Node(this);
 }
 
+Drupal.prototype.entity = function (type) {
+  return new Entity(this, type);
+}
 /*
  * Superagent middle ware.
  */
