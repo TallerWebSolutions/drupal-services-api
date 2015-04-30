@@ -7,6 +7,7 @@ var DrupalFile = require('./lib/file');
 var User    = require('./lib/user');
 var Node    = require('./lib/node');
 var Entity    = require('./lib/entity');
+var Views    = require('./lib/views');
 var Promise = require('bluebird'); // jshint ignore:line
 
 function Drupal(endpoint, connection) {
@@ -27,6 +28,7 @@ function Drupal(endpoint, connection) {
   this.file               = new DrupalFile(this);
   this.user               = new User(this);
   this.node               = new Node(this);
+  this.views              = new Views(this);
 }
 
 Drupal.prototype.entity = function (type) {
