@@ -160,7 +160,10 @@ Drupal.prototype.login = function(username, password) {
           this._csrfToken = data.token;
 
           returnPromise.resolve(data);
-        }.bind(this));
+        }.bind(this))
+        .catch(function(error) {
+          returnPromise.reject(error);
+        });
     }
   }.bind(this))
   .catch(function (error) {
