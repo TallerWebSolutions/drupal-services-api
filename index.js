@@ -6,8 +6,9 @@ var TaxonomyVocabulary = require('./lib/taxonomy-vocabulary');
 var DrupalFile = require('./lib/file');
 var User    = require('./lib/user');
 var Node    = require('./lib/node');
-var Entity    = require('./lib/entity');
-var Views    = require('./lib/views');
+var Entity  = require('./lib/entity');
+var Views   = require('./lib/views');
+var Share   = require('./lib/share');
 var Promise = require('bluebird'); // jshint ignore:line
 
 function Drupal(endpoint, connection) {
@@ -29,6 +30,7 @@ function Drupal(endpoint, connection) {
   this.user               = new User(this);
   this.node               = new Node(this);
   this.views              = new Views(this);
+  this.share              = new Share(this);
 }
 
 Drupal.prototype.entity = function (type) {
